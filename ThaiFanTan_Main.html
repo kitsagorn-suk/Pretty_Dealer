@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Pretty Gaming</title>
+    <style>
+        @charset "UTF-8";
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.42em;
+            color: #A7A1AE;
+            background-color: #282848;
+        }
+
+        .blue {
+            color: #185875;
+        }
+
+        .yellow {
+            color: #FFF842;
+        }
+
+        .container td {
+            font-weight: normal;
+            font-size: 1em;
+            -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+            -moz-box-shadow: 0 2px 2px -2px #0E1119;
+            box-shadow: 0 2px 2px -2px #0E1119;
+        }
+
+        .container {
+            text-align: left;
+            overflow: hidden;
+            width: 60%;
+            margin: 0 auto;
+            display: table;
+            padding: 0 0 8em 0;
+            border-collapse: separate;
+            border-spacing: 0 .5rem;
+        }
+
+            .container td, .container th {
+                padding-bottom: .5rem;
+                padding-top: 1rem;
+                padding-left: 1rem;
+            }
+
+            /* Background-color of the odd rows */
+            .container tr:nth-child(odd) {
+                background-color: #42425D;
+            }
+
+            /* Background-color of the even rows */
+            .container tr:nth-child(even) {
+                background-color: #53536D;
+            }
+
+            .container th {
+                background-color: #1F2739;
+            }
+
+            .container td:first-child {
+                color: #FB667A;
+            }
+
+        table > tbody > tr > td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        table > tbody > tr > td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        @media (max-width: 800px) {
+            .container td:nth-child(4),
+            .container th:nth-child(4) {
+                display: none;
+            }
+        }
+
+        .bgWhite {
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        table > tbody > tr > td:nth-child(6) {
+            padding-right: 1rem;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div style="text-align: center; padding-top: 1rem;"><img src="img/logo.png" style="width: 12%;" /></div>
+    <div style="text-align: center;"><h1>Game ID : 123456</h1></div>
+    <table class="container">
+        <tbody>
+            <!--<tr>
+                <td><img src='img/iconSicbo/diceIcon-s.png' style='width: 9rem;' /></td>
+                <td><img src='img/iconSicbo/diceIcon-e.png' style='width: 9rem;' /></td>
+                <td><img src='img/iconSicbo/diceIcon-2.png' style='width: 9rem;' /></td>
+                <td><img src='img/iconSicbo/diceIcon-2.png' style='width: 9rem;' /></td>
+                <td><img src='img/iconSicbo/diceIcon-4.png' style='width: 9rem;' /></td>
+                <td><img src='img/Number/8.png' style='width: 9rem;' class='bgWhite' /></td>
+            </tr>-->
+        </tbody>
+    </table>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var no = 1;
+            var txtNum = "";
+            var arrSt = ['wse22408', 'ybo42208', 'gso12306'];
+            var htmlTable = "";
+            for (var i = 0; i < arrSt.length; i++) {
+                var model = arrSt[i];
+                htmlTable += "<tr>";
+                for (var j = 0; j < model.length; j++) {
+                    if (j == 1) {
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                    }
+                    else if (j == 2) {
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                    }
+                    else if (j == 3) {
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                    }
+                    else if (j == 4) {
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                    }
+                    else if (j == 5) {
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 10rem;' /></td>";
+                        }
+                    }
+                    else if (j == 6) {
+                        txtNum = txtNum.toString() + model.charAt(j).toString();                       
+                    }
+                    else if (j == 7) {
+                        var num = parseInt(txtNum);
+                        if (model.charAt(0) == "w") {
+                            htmlTable += "<td style='background-color: #fff;'><img src='img/Number/" + model.charAt(j) + ".png' style='width: 10rem;' class='bgWhite' /></td>";
+                        }
+                        else if (model.charAt(0) == "y") {
+                            htmlTable += "<td style='background-color: #fffd53;'><img src='img/Number/" + model.charAt(j) + ".png' style='width: 10rem;' class='bgWhite' /></td>";
+                        }
+                        else if (model.charAt(0) == "g") {
+                            htmlTable += "<td style='background-color: #51b054;'><img src='img/Number/" + model.charAt(j) + ".png' style='width: 10rem;' class='bgWhite' /></td>";
+                        }
+                        else if (model.charAt(0) == "r") {
+                            htmlTable += "<td style='background-color: #da2e20;'><img src='img/Number/" + model.charAt(j) + ".png' style='width: 10rem;' class='bgWhite' /></td>";
+                        }
+
+                        txtNum = "";
+                    }
+                }
+
+                htmlTable += "</tr>";
+                no++;
+            }
+
+            $('.container > tbody').append(htmlTable);
+        });
+    </script>
+</body>
+</html>

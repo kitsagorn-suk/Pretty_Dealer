@@ -1,0 +1,1415 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Pretty Gaming</title>
+    <link href="js/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .imgResult {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .tbStatic {
+            border: 1px solid;
+            text-align: center;
+        }
+
+        .play-area-sub {
+            /*width: 47%;*/
+            padding: 1em 1%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        #capture {
+            display: none;
+        }
+
+        #snapshot {
+            display: inline-block;
+            width: 320px;
+            height: 240px;
+        }
+
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #b2b2b2 !important;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-blue topbar mb-4 static-top shadow" style="height: 6.3rem;">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <img src="img/logo.png" style="width: 25%;" />
+                    </form>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" id="" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 1.8rem;" id="time">
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="userDropdown" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtGameID" style="font-size: 1.8rem;">Game ID : -</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtProfile" style="font-size: 1.5rem;">ชื่อพนักงาน : - <br />รหัสพนักงาน : -</span>
+                                <img class="img-profile rounded-circle" src="img/user.png" id="imgStaff" />
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" onclick="Logout()" style="color: #000 !important;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    ออกจากระบบ
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetcreateNewGame();"><i class="fas fa-play fa-sm text-white-50"></i> เริ่มเกมส์ (กดปุ่ม + Enter)</a>
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetShuf();"><i class="fas fa-retweet fa-sm text-white-50"></i> เปลี่ยนขอนไพ่</a>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #2771FF;">
+                                    <h3 class="m-0 font-weight-bold text-primary">Thai Fan Tan</h3>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row" style="text-align: center;">
+                                        <input type="number" id="txtVal" onkeypress="return isNumberKey(event)" onInput="checkLength()" style="caret-color: transparent; width: 100%; font-size: 20rem; text-align: center; border: none; outline: none; letter-spacing: 5rem;" placeholder="000" maxlength="3" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7">
+                            <div class="card" style="background-color: #17172C;">
+                                <div class="card-body" style="padding: 0.9rem;">
+                                    <table class="table-bordered">
+                                        <tr>
+                                            <td id="cell1_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_1" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_2" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_3" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_4" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_5" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell2_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_6" style="padding: 5px;"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-md-6">
+                                    <div class="play-area">
+                                        <div class="play-area-sub">
+                                            <div id="stream"></div>
+                                        </div>
+                                        <div class="play-area-sub" style="display: none;">
+                                            <div id="snapshot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-top: 5rem;">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 4rem;" id="statusGame">
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<div class="col-md-12" style="text-align: center; margin-top: 5rem;">
+
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Modal Logout-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ออกจากระบบ</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">ต้องการออกจากระบบใช่หรือไม่?</div>
+                <div class="modal-footer">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> ยกเลิก (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="Logout();"><i class="fas fa-check fa-sm text-white-50"></i> ยืนยัน (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal shuffle-->
+    <div class="modal fade" id="shuffleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เปลี่ยนขอนไพ่</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">ต้องการเปลี่ยนขอนไพ่ใช่หรือไม่?</div>
+                <div class="modal-footer">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> ยกเลิก (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="actionShuffle();"><i class="fas fa-check fa-sm text-white-50"></i> ยืนยัน (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Countdown -->
+    <div id="myModalCountdown" class="modal">
+        <h1 style="text-align: center; color: #fff; font-size: 16rem; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="txtCount">เริ่ม</h1>
+    </div>
+    <!-- Modal Result-->
+    <div class="modal fade" id="myModalResult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการส่งผล?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4" style="text-align: center;"><img src="" id="imgResult1"></div>
+                        <div class="col-4" style="text-align: center;"><img src="" id="imgResult2"></div>
+                        <div class="col-4" style="text-align: center;"><img src="" id="imgResult3"></div>
+                    </div>
+                    <p id="showResultAI" style="text-align: center; margin-top: 1rem; margin-bottom: 0;"></p>
+                </div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> แก้ไข (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งผล (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Re-->
+    <div class="modal fade" id="myModalRe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการส่งผลอีกครั้ง?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>ไม่สามารถส่งผลได้ กรุณากด Enter ส่งใหม่อีกครั้ง.</label><br /><label id="txtAlertRe"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งอีกครั้ง (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Load-->
+    <div id="myModalLoad" class="modal">
+        <div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #dddfeb !important;">
+            <div class="spinner-border" role="status" style="width: 10rem; height: 10rem; font-size: 3rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert-->
+    <div class="modal fade" id="myModalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #d11b0a;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label id="txtAlert"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด (กด Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert Success-->
+    <div class="modal fade" id="myModalSuccessAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #307000bf;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>เปลี่ยนขอนไพ่เรียบร้อยแล้ว</label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด (กด Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/statistic.js"></script>
+    <script type="text/javascript" src="js/webcam.min.js"></script>
+    <script>
+        var api = "https://api-dev.prettygaming.asia";
+        var statusAddCrad = false; ///ถ้าเป็น true ค่อย focus ที่ input กรอกเลข-
+        var map = { 107: false, 13: false };
+        var keyAgain = false;
+        var nameDealer = "";
+        var countGame = 0;
+
+        $(document).ready(function () {
+            startTime();
+            GettableProfile();
+            //GetcreateNewGame();
+
+            $(document).click(function (e) {
+                $("#txtVal").focus();
+            });
+
+            $(document).keyup(function (e) {
+                if (e.keyCode == 107) {
+                    map[107] = true;
+                    //$("#txtVal").val("");
+                }
+                else if (e.keyCode == 110) {
+                    $('#logoutModal').modal();
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 106) {
+                    $('#shuffleModal').modal();
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && $('#myModalAlert').is(':visible')) {
+                    $('#myModalAlert').modal('hide');
+                    $('#txtAlert').text('');
+                    map[107] = false;
+                    $("#txtVal").val("");
+                    $("#txtVal").focus();
+                }
+                else if (e.keyCode == 13 && $('#myModalSuccessAlert').is(':visible')) {
+                    $('#myModalSuccessAlert').modal('hide');
+                    $('#txtAlert').text('');
+                    map[107] = false;
+                    $("#valTxt").val("");
+                    $("#valTxt").focus();
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalRe').is(':visible')) {
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "หมดเวลา";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                    map[107] = false;
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalResult').is(':visible')) {
+                    sendFinishGame();
+                    map[107] = false;
+                    //$("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#logoutModal').is(':visible')) {
+                    Logout();
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#shuffleModal').is(':visible')) {
+                    actionShuffle();
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true) {
+                    GetcreateNewGame();
+                    map[107] = false;
+                }
+                else if (e.keyCode == 109 && $('#myModalResult').is(':visible')) {
+                    $('#myModalResult').modal('hide');
+                    $("#txtVal").val("");
+                    $("#txtVal").focus();
+                }
+                else if (e.keyCode == 109 && $('#logoutModal').is(':visible')) {
+                    $("#txtVal").focus();
+                    $('#logoutModal').modal('hide');
+                }
+                else if (e.keyCode == 13 && $("#txtVal").is(':focus') && $("#txtVal").val().length == 3) {
+                    checkValue();
+                }
+                else if (e.keyCode == 109 && $('#shuffleModal').is(':visible')) {
+                    $('#shuffleModal').modal('hide');
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 96) {
+                    location.reload(true);
+                }
+                else {
+                    map[107] = false;
+                }
+            });
+        });
+
+        function GetShuf() {
+            $('#shuffleModal').modal();
+            $("#valTxt").val("");
+        }
+
+        function dataURItoBlob(dataURI) {
+            var byteString = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var buffer = new ArrayBuffer(byteString.length);
+            var data = new DataView(buffer);
+            for (var i = 0; i < byteString.length; i++) {
+                data.setUint8(i, byteString.charCodeAt(i));
+            }
+            return new Blob([buffer], { type: mimeString });
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout(function () {
+                startTime()
+            }, 500);
+        }
+
+        function GettableProfile() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/tableProfile',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        if (data.data.table.type == "ThaiFanTan") {
+                            if (data.data.game == null) {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                nameDealer = data.data.dealer.no;
+                                $("#statusGame").text("กดขอเวลาเพื่อเริ่มเกมส์ใหม่");
+
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                var no = 1;
+                                var txtNum = "";
+                                var arrSt = data.data.stats;
+                                countGame = arrSt.length;
+                                if (arrSt.length > 0 && arrSt.length > 20) {
+                                    for (var i = 1; i < 21; i++) {
+                                        var model = arrSt[arrSt.length - i];
+                                        for (var j = 0; j < model.length; j++) {
+                                            if (j == 0) {
+                                                $("#cell" + (21 - no) + "_1").html("");
+                                                $("#cell" + (21 - no) + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 1) {
+                                                $("#cell" + (21 - no) + "_2").html("");
+                                                $("#cell" + (21 - no) + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 2) {
+                                                $("#cell" + (21 - no) + "_3").html("");
+                                                $("#cell" + (21 - no) + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 3) {
+                                                $("#cell" + (21 - no) + "_4").html("");
+                                                $("#cell" + (21 - no) + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 4) {
+                                                $("#cell" + (21 - no) + "_5").html("");
+                                                $("#cell" + (21 - no) + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 5) {
+                                                txtNum = model.charAt(j).toString();
+                                            }
+                                            else if (j == 6) {
+                                                txtNum = txtNum.toString() + model.charAt(j).toString();
+                                                var num = parseInt(txtNum);
+                                                $("#cell" + (21 - no) + "_6").html("");
+                                                $("#cell" + (21 - no) + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                                txtNum = "";
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                        }
+                                        no++;
+                                    }
+                                }
+                                else if (arrSt.length > 0 && arrSt.length <= 20) {
+                                    for (var i = 0; i < arrSt.length; i++) {
+                                        var model = arrSt[i];
+                                        for (var j = 0; j < model.length; j++) {
+                                            if (j == 0) {
+                                                $("#cell" + no + "_1").html("");
+                                                $("#cell" + no + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_1").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_1").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_1").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_1").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 1) {
+                                                $("#cell" + no + "_2").html("");
+                                                $("#cell" + no + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_2").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_2").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_2").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_2").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 2) {
+                                                $("#cell" + no + "_3").html("");
+                                                $("#cell" + no + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_3").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_3").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_3").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_3").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 3) {
+                                                $("#cell" + no + "_4").html("");
+                                                $("#cell" + no + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_4").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_4").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_4").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_4").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 4) {
+                                                $("#cell" + no + "_5").html("");
+                                                $("#cell" + no + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_5").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_5").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_5").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_5").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 5) {
+                                                txtNum = model.charAt(j).toString();
+                                            }
+                                            else if (j == 6) {
+                                                txtNum = txtNum.toString() + model.charAt(j).toString();
+                                                var num = parseInt(txtNum);
+                                                $("#cell" + no + "_6").html("");
+                                                $("#cell" + no + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                                txtNum = "";
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_6").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_6").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_6").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_6").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                        }
+                                        no++;
+                                    }
+                                }
+                                else {
+                                    for (var i = 1; i < 21; i++) {
+                                        $("#cell" + i + "_1 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_2 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_3 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_4 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_5 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_6 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_1").css('background-color', 'initial');
+                                        $("#cell" + i + "_2").css('background-color', 'initial');
+                                        $("#cell" + i + "_3").css('background-color', 'initial');
+                                        $("#cell" + i + "_4").css('background-color', 'initial');
+                                        $("#cell" + i + "_5").css('background-color', 'initial');
+                                        $("#cell" + i + "_6").css('background-color', 'initial');
+                                    }
+                                }
+                            }
+                            else {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                nameDealer = data.data.dealer.no;
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                localStorage.removeItem("GameId");
+                                localStorage.removeItem("_ID");
+                                localStorage.setItem("GameId", data.data.game.gameId);
+                                localStorage.setItem("_ID", data.data.game._id);
+
+                                $("#txtGameID").text("Game ID : " + data.data.game.gameId);
+
+                                if (data.data.game.status == "CountDown") {
+                                    CountdownTime(data.data.game.tl);
+                                }
+                                else if (data.data.game.status == "ShowResult") {
+                                    statusAddCrad = true;
+                                }
+
+                                if (data.data.game.status == "ShowResult") {
+                                    $("#statusGame").text("เปิดเลย");
+                                    $('#txtVal').focus();
+                                }
+                                else if (data.data.game.status == "CountDown") {
+                                    $("#statusGame").text("กำลังนับถอยหลัง");
+                                }
+                                else if (data.data.game.status == "Shuffle") {
+                                    $("#statusGame").text("กำลังสับไพ่");
+                                }
+                                else if (data.data.game.status == "PayOut") {
+                                    $("#statusGame").text("จบเกมส์แล้ว");
+                                }
+
+                                var no = 1;
+                                var txtNum = "";
+                                var arrSt = data.data.stats;
+                                countGame = arrSt.length;
+                                if (arrSt.length > 0 && arrSt.length > 20) {
+                                    for (var i = 1; i < 21; i++) {
+                                        var model = arrSt[arrSt.length - i];
+                                        for (var j = 0; j < model.length; j++) {
+                                            if (j == 0) {
+                                                $("#cell" + (21 - no) + "_1").html("");
+                                                $("#cell" + (21 - no) + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_1").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 1) {
+                                                $("#cell" + (21 - no) + "_2").html("");
+                                                $("#cell" + (21 - no) + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_2").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 2) {
+                                                $("#cell" + (21 - no) + "_3").html("");
+                                                $("#cell" + (21 - no) + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_3").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 3) {
+                                                $("#cell" + (21 - no) + "_4").html("");
+                                                $("#cell" + (21 - no) + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_4").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 4) {
+                                                $("#cell" + (21 - no) + "_5").html("");
+                                                $("#cell" + (21 - no) + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_5").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 5) {
+                                                txtNum = model.charAt(j).toString();
+                                            }
+                                            else if (j == 6) {
+                                                txtNum = txtNum.toString() + model.charAt(j).toString();
+                                                var num = parseInt(txtNum);
+                                                $("#cell" + (21 - no) + "_6").html("");
+                                                $("#cell" + (21 - no) + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                                txtNum = "";
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + (21 - no) + "_6").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                        }
+                                        no++;
+                                    }
+                                }
+                                else if (arrSt.length > 0 && arrSt.length <= 20) {
+                                    for (var i = 0; i < arrSt.length; i++) {
+                                        var model = arrSt[i];
+                                        for (var j = 0; j < model.length; j++) {
+                                            if (j == 0) {
+                                                $("#cell" + no + "_1").html("");
+                                                $("#cell" + no + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_1").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_1").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_1").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_1").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 1) {
+                                                $("#cell" + no + "_2").html("");
+                                                $("#cell" + no + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_2").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_2").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_2").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_2").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 2) {
+                                                $("#cell" + no + "_3").html("");
+                                                $("#cell" + no + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_3").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_3").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_3").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_3").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 3) {
+                                                $("#cell" + no + "_4").html("");
+                                                $("#cell" + no + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_4").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_4").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_4").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_4").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 4) {
+                                                $("#cell" + no + "_5").html("");
+                                                $("#cell" + no + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_5").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_5").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_5").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_5").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                            else if (j == 5) {
+                                                txtNum = model.charAt(j).toString();
+                                            }
+                                            else if (j == 6) {
+                                                txtNum = txtNum.toString() + model.charAt(j).toString();
+                                                var num = parseInt(txtNum);
+                                                $("#cell" + no + "_6").html("");
+                                                $("#cell" + no + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                                txtNum = "";
+                                                if (model.charAt(7) == "W") {
+                                                    $("#cell" + no + "_6").css('background-color', '#fff');
+                                                }
+                                                else if (model.charAt(7) == "Y") {
+                                                    $("#cell" + no + "_6").css('background-color', '#fffd53');
+                                                }
+                                                else if (model.charAt(7) == "G") {
+                                                    $("#cell" + no + "_6").css('background-color', '#51b054');
+                                                }
+                                                else if (model.charAt(7) == "R") {
+                                                    $("#cell" + no + "_6").css('background-color', '#da2e20');
+                                                }
+                                            }
+                                        }
+                                        no++;
+                                    }
+                                }
+                                else {
+                                    for (var i = 1; i < 21; i++) {
+                                        $("#cell" + i + "_1 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_2 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_3 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_4 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_5 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_6 > img").attr("src", "img/none.png");
+                                        $("#cell" + i + "_1").css('background-color', 'initial');
+                                        $("#cell" + i + "_2").css('background-color', 'initial');
+                                        $("#cell" + i + "_3").css('background-color', 'initial');
+                                        $("#cell" + i + "_4").css('background-color', 'initial');
+                                        $("#cell" + i + "_5").css('background-color', 'initial');
+                                        $("#cell" + i + "_6").css('background-color', 'initial');
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            $("#txtAlert").text("หมายเลขโต๊ะไม่ตรงกับประเภทเกมส์ กรุณาเข้าสู่ระบบอีกครั้ง.");
+                            $("#myModalAlert").modal();
+                            localStorage.clear();
+                            window.location.href = "Login.html";
+                        }
+                    }
+                    else {
+                        $("#txtAlert").text(data.msg);
+                        $("#myModalAlert").modal();
+                        localStorage.clear();
+                        window.location.href = "Login.html";
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถดึงข้อมูลโต๊ะได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function GetcreateNewGame() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/createNewGame',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#txtVal").val("");
+                        //GettableProfile();
+                        CountdownTime(data.data.tl);
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        localStorage.setItem("GameId", data.data.gameId);
+                        localStorage.setItem("_ID", data.data._id);
+                        $("#txtGameID").text("Game ID : " + data.data.gameId);
+                        keyAgain = false;
+                    }
+                    else {
+                        $("#txtAlert").text("Error createNewGame : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถเริ่มเกมส์ใหม่ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function CountdownTime(timeleft) {
+            $("#myModalCountdown").modal();
+            document.getElementById("txtCount").innerHTML = "เริ่ม";
+            $("#statusGame").text("กำลังนับถอยหลัง");
+            var downloadTimer = setInterval(function () {
+                if (timeleft == 0) {
+                    clearInterval(downloadTimer);
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "หมดเวลา";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+
+                                setTimeout(function () {
+                                    checkValue();
+                                }, 5000);
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                }
+                else {
+                    document.getElementById("txtCount").innerHTML = timeleft;
+                }
+
+                timeleft -= 1;
+            }, 1000);
+        }
+
+        function checkLength() {
+            var fieldLength = document.getElementById('txtVal').value.length;
+            if (fieldLength <= 3) {
+                return true;
+            }
+            else {
+                var str = document.getElementById('txtVal').value;
+                str = str.substring(0, str.length - 1);
+                document.getElementById('txtVal').value = str;
+            }
+        }
+
+        function isNumberKey(e) {
+            var regex = new RegExp("^[1-6]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
+        function checkValue() {
+            $("#myModalLoad").modal();
+            var arrPic = [];
+
+            var n1 = Math.floor(Math.random() * 6) + 1;
+            var n2 = Math.floor(Math.random() * 6) + 1;
+            var n3 = Math.floor(Math.random() * 6) + 1;
+
+            var val = n1 + "" + n2 + "" + n3;
+            $('#txtVal').val(val);
+
+            var arrVal = [];
+            for (var x = 0; x < val.length; x++) {
+                arrVal.push(parseInt(val[x]));
+            }
+
+            arrVal.sort(function (a, b) {
+                return a[1] - b[1];
+            });
+
+            var total = arrVal.reduce(function (a, b) {
+                return a + b;
+            }, 0);
+
+            var sendData = new Object();
+            sendData.gameId = localStorage.getItem("GameId");
+            sendData.rsTft = val.toString();
+            $.ajax({
+                url: api + '/clientRoute/game/addcard',
+                type: 'POST',
+                dataType: 'json',
+                data: sendData,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        for (var c = 0; c < arrVal.length; c++) {
+                            if (c == 0) {
+                                document.getElementById("imgResult1").src = "img/iconSicbo/diceIcon-" + arrVal[c] + ".png";
+                            }
+                            else if (c == 1) {
+                                document.getElementById("imgResult2").src = "img/iconSicbo/diceIcon-" + arrVal[c] + ".png";
+                            }
+                            else if (c == 2) {
+                                document.getElementById("imgResult3").src = "img/iconSicbo/diceIcon-" + arrVal[c] + ".png";
+                            }
+                        }
+                        $('#showResultAI').text(arrPic.toString() + " : True");
+                        $('#myModalResult').modal();
+                        $("#myModalLoad").modal("hide");
+
+                        setTimeout(function () {
+                            sendFinishGame();
+                        }, 5000);
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Addcard (True) : " + data.msg);
+                        $("#myModalAlert").modal();
+                        $("#myModalLoad").modal("hide");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถส่งค่าได้ กรุณาลองใหม่อีกครั้ง. Error (True) : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                    $("#myModalLoad").modal("hide");
+                }
+            });
+
+            $('#txtVal').focus();
+        }
+
+        function sendFinishGame() {
+            var val = $('#txtVal').val();
+            var arr = [];
+            for (var x = 0; x < val.length; x++) {
+                arr.push(parseInt(val[x]));
+            }
+
+            var sendData = new Object();
+            sendData.gameId = localStorage.getItem("GameId");
+            sendData.rsTft = val.toString();
+            $("#myModalLoad").modal();
+            $.ajax({
+                url: api + '/clientRoute/game/payout',
+                type: 'POST',
+                dataType: 'json',
+                data: sendData,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#txtVal").val("");
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        $("#txtGameID").text("Game ID : -");
+                        $("#txtResult").text("");
+                        GettableProfile();
+
+                        if (countGame < 100) {
+                            setTimeout(function () {
+                                GetcreateNewGame();
+                            }, 5000);
+                        }
+                        else {
+                            countGame = 0;
+                            setTimeout(function () {
+                                actionShuffle();
+                            }, 5000);
+                        }
+
+                        console.log(countGame);
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Payout : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+    
+                    $('#myModalResult').modal('hide');
+                    $("#myModalLoad").modal("hide");
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถส่งผลได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function actionShuffle() {
+            $('#shuffleModal').modal('hide');
+            var result = new Object();
+            result.tableId = localStorage.getItem("TableId");
+            result.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/shuffle',
+                type: 'POST',
+                dataType: 'json',
+                data: result,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#myModalSuccessAlert").modal();
+                        GettableProfile();
+
+                        setTimeout(function () {
+                            $("#myModalSuccessAlert").modal("hide");
+                        }, 5000);
+
+                        setTimeout(function () {
+                            GetcreateNewGame();
+                        }, 5000);
+                    }
+                    else {
+                        $("#txtAlert").text("Error removeCard : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+            map[107] = false;
+            $("#valTxt").val("");
+        }
+
+        function Logout() {
+            window.location.href = "Login.html?tbNo=" + localStorage.getItem("TableId");
+        }
+    </script>
+</body>
+</html>

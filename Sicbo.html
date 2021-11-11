@@ -1,0 +1,1177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Pretty Gaming</title>
+    <link href="js/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .imgResult {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .tbStatic {
+            border: 1px solid;
+            text-align: center;
+        }
+
+        .play-area-sub {
+            /*width: 47%;*/
+            padding: 1em 1%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        #capture {
+            display: none;
+        }
+
+        #snapshot {
+            display: inline-block;
+            width: 320px;
+            height: 240px;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-blue topbar mb-4 static-top shadow" style="height: 6.3rem;">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <img src="img/logo.png" style="width: 25%;" />
+                    </form>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" id="" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 1.8rem;" id="time">
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="userDropdown" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtGameID" style="font-size: 1.8rem;">Game ID : -</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtProfile" style="font-size: 1.5rem;">ชื่อพนักงาน : - <br />รหัสพนักงาน : -</span>
+                                <img class="img-profile rounded-circle" src="img/user.png" id="imgStaff" />
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" onclick="Logout()" style="color: #000 !important;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    ออกจากระบบ
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetcreateNewGame();"><i class="fas fa-play fa-sm text-white-50"></i> เริ่มเกมส์ (กดปุ่ม + Enter)</a>
+                        <!--<a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetShuf();"><i class="fas fa-retweet fa-sm text-white-50"></i> เปลี่ยนขอนไพ่</a>-->
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #2771FF;">
+                                    <h3 class="m-0 font-weight-bold text-primary">Sicbo</h3>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row" style="text-align: center;">
+                                        <input type="number" id="txtVal" onkeypress="return isNumberKey(event)" onInput="checkLength()" style="caret-color: transparent; width: 100%; font-size: 20rem; text-align: center; border: none; outline: none; letter-spacing: 5rem;" placeholder="000" maxlength="3" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table-bordered">
+                                        <tr>
+                                            <td id="cell1_1"><img src='img/iconSicbo/diceIcon_S.png' style='width: 41px;' /></td>
+                                            <td id="cell2_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_1"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_2"><img src='img/iconSicbo/diceIcon_E.png' style='width: 41px;' /></td>
+                                            <td id="cell2_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_2"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_3"><img src='img/iconSicbo/diceIcon-2.png' style='width: 41px;' /></td>
+                                            <td id="cell2_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_3"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_4"><img src='img/iconSicbo/diceIcon-2.png' style='width: 41px;' /></td>
+                                            <td id="cell2_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_4"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_5"><img src='img/iconSicbo/diceIcon-4.png' style='width: 41px;' /></td>
+                                            <td id="cell2_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_5"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_6"><img src='img/Number/8.png' style='width: 41px;' /></td>
+                                            <td id="cell2_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell3_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell4_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell5_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell6_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell7_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell8_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell9_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell10_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell11_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell12_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell13_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell14_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell15_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell16_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell17_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell18_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell19_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell20_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell21_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell22_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                            <td id="cell23_6"><img src='img/none.png' style='width: 41px;' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-md-6">
+                                    <div class="play-area">
+                                        <div class="play-area-sub">
+                                            <video id="stream" width="500" height="450"></video>
+                                        </div>
+                                        <div class="play-area-sub" style="display: none;">
+                                            <canvas id="capture" width="600" height="550"></canvas>
+                                            <div id="snapshot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-top: 5rem;">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 4rem;" id="statusGame">
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<div class="col-md-12" style="text-align: center; margin-top: 5rem;">
+
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Modal Logout-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ออกจากระบบ</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">ต้องการออกจากระบบใช่หรือไม่?</div>
+                <div class="modal-footer">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> ยกเลิก (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="Logout();"><i class="fas fa-check fa-sm text-white-50"></i> ยืนยัน (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Countdown -->
+    <div id="myModalCountdown" class="modal">
+        <h1 style="text-align: center; color: #fff; font-size: 16rem; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="txtCount">เริ่ม</h1>
+    </div>
+    <!-- Modal Result-->
+    <div class="modal fade" id="myModalResult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการส่งผล?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin-top: 2rem;"><h1 style="text-align: center; font-size: 18rem; color: #000;" id="txtResult"></h1></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> แก้ไข (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งผล (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Re-->
+    <div class="modal fade" id="myModalRe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการส่งผลอีกครั้ง?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>ไม่สามารถส่งผลได้ กรุณากด Enter ส่งใหม่อีกครั้ง.</label><br /><label id="txtAlertRe"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งอีกครั้ง (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Load-->
+    <div id="myModalLoad" class="modal">
+        <div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #dddfeb !important;">
+            <div class="spinner-border" role="status" style="width: 10rem; height: 10rem; font-size: 3rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert-->
+    <div class="modal fade" id="myModalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #d11b0a;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label id="txtAlert"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด (กด Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert Success-->
+    <div class="modal fade" id="myModalSuccessAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #307000bf;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>เปลี่ยนขอนไพ่เรียบร้อยแล้ว</label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด (กด Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/statistic.js"></script>
+    <script>
+        var api = "https://api-dev.prettygaming.asia";
+        var statusAddCrad = false; ///ถ้าเป็น true ค่อย focus ที่ input กรอกเลข-
+        var stream = document.getElementById("stream");
+        var capture = document.getElementById("capture");
+        var snapshot = document.getElementById("snapshot");
+        var btnCapture = document.getElementById("btn-capture");
+        var keyAgain = false;
+
+        $(document).ready(function () {
+            startStreaming();
+            startTime();
+            GettableProfile();
+
+            $(document).click(function (e) {
+                $("#txtVal").focus();
+            });
+
+            var map = { 107: false, 13: false };
+            $(document).keyup(function (e) {
+                if (e.keyCode == 107) {
+                    map[107] = true;
+                    //$("#txtVal").val("");
+                }
+                else if (e.keyCode == 110) {
+                    $('#logoutModal').modal();
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && $('#myModalAlert').is(':visible')) {
+                    $('#myModalAlert').modal('hide');
+                    $('#txtAlert').text('');
+                    map[107] = false;
+                    $("#txtVal").val("");
+                    $("#txtVal").focus();
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalRe').is(':visible')) {
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "หมดเวลา";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                    map[107] = false;
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalResult').is(':visible')) {
+                    sendFinishGame();
+                    map[107] = false;
+                    //$("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#logoutModal').is(':visible')) {
+                    Logout();
+                    $("#txtVal").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true) {
+                    GetcreateNewGame();
+                    map[107] = false;
+                }
+                else if (e.keyCode == 109 && $('#myModalResult').is(':visible')) {
+                    $('#myModalResult').modal('hide');
+                    $("#txtVal").val("");
+                    $("#txtVal").focus();
+                }
+                else if (e.keyCode == 109 && $('#logoutModal').is(':visible')) {
+                    $("#txtVal").focus();
+                    $('#logoutModal').modal('hide');
+                }
+                else if (e.keyCode == 13 && $("#txtVal").is(':focus') && $("#txtVal").val().length == 3) {
+                    checkValue();
+                }
+                else if (e.keyCode == 96) {
+                    location.reload(true);
+                }
+                else {
+                    map[107] = false;
+                }
+            });
+        });
+
+        var cameraStream = null;
+        function startStreaming() {
+            var mediaSupport = 'mediaDevices' in navigator;
+            if (mediaSupport && null == cameraStream) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    cameraStream = mediaStream;
+                    stream.srcObject = mediaStream;
+                    stream.play();
+                })
+                .catch(function (err) {
+                    alert("Unable to access camera: " + err);
+                });
+            }
+            else {
+                alert('Your browser does not support media devices.');
+                return;
+            }
+        }
+
+        function dataURItoBlob(dataURI) {
+            var byteString = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var buffer = new ArrayBuffer(byteString.length);
+            var data = new DataView(buffer);
+            for (var i = 0; i < byteString.length; i++) {
+                data.setUint8(i, byteString.charCodeAt(i));
+            }
+            return new Blob([buffer], { type: mimeString });
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout(function () {
+                startTime()
+            }, 500);
+        }
+
+        function GettableProfile() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/tableProfile',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        if (data.data.table.type == "SicBo") {
+                            if (data.data.game == null) {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                $("#statusGame").text("กดขอเวลาเพื่อเริ่มเกมส์ใหม่");
+
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                var no = 1;
+                                var txtNum = "";
+                                var arrSt = ['se22408', 'bo42208', 'so12306'];
+                                for (var i = 0; i < arrSt.length; i++) {
+                                    var model = arrSt[i];
+                                    for (var j = 0; j < model.length; j++) {
+                                        if (j == 0) {
+                                            $("#cell" + no + "_1").html("");
+                                            $("#cell" + no + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 1) {
+                                            $("#cell" + no + "_2").html("");
+                                            $("#cell" + no + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 2) {
+                                            $("#cell" + no + "_3").html("");
+                                            $("#cell" + no + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 3) {
+                                            $("#cell" + no + "_4").html("");
+                                            $("#cell" + no + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 4) {
+                                            $("#cell" + no + "_5").html("");
+                                            $("#cell" + no + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 5) {
+                                            txtNum = model.charAt(j).toString();
+                                        }
+                                        else if (j == 6) {
+                                            txtNum = txtNum.toString() + model.charAt(j).toString();
+                                            var num = parseInt(txtNum);
+                                            $("#cell" + no + "_6").html("");
+                                            $("#cell" + no + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                            txtNum = "";
+                                        }
+                                    }
+                                    no++;
+                                }
+                            }
+                            else {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                localStorage.removeItem("GameId");
+                                localStorage.removeItem("_ID");
+                                localStorage.setItem("GameId", data.data.game.gameId);
+                                localStorage.setItem("_ID", data.data.game._id);
+
+                                $("#txtGameID").text("Game ID : " + data.data.game.gameId);
+
+                                if (data.data.game.status == "CountDown") {
+                                    CountdownTime(data.data.game.tl);
+                                }
+                                else if (data.data.game.status == "ShowResult") {
+                                    statusAddCrad = true;
+                                }
+
+                                if (data.data.game.status == "ShowResult") {
+                                    $("#statusGame").text("เปิดเลย");
+                                    $('#txtVal').focus();
+                                }
+                                else if (data.data.game.status == "CountDown") {
+                                    $("#statusGame").text("กำลังนับถอยหลัง");
+                                }
+                                    //else if (data.data.game.status == "Shuffle") {
+                                    //    $("#statusGame").text("กำลังสับไพ่");
+                                    //}
+                                else if (data.data.game.status == "PayOut") {
+                                    $("#statusGame").text("จบเกมส์แล้ว");
+                                }
+
+                                var no = 1;
+                                var txtNum = "";
+                                var arrSt = ['se22408', 'bo42208', 'so12306'];
+                                for (var i = 0; i < arrSt.length; i++) {
+                                    var model = arrSt[i];
+                                    for (var j = 0; j < model.length; j++) {
+                                        if (j == 0) {
+                                            $("#cell" + no + "_1").html("");
+                                            $("#cell" + no + "_1").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 1) {
+                                            $("#cell" + no + "_2").html("");
+                                            $("#cell" + no + "_2").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 2) {
+                                            $("#cell" + no + "_3").html("");
+                                            $("#cell" + no + "_3").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 3) {
+                                            $("#cell" + no + "_4").html("");
+                                            $("#cell" + no + "_4").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 4) {
+                                            $("#cell" + no + "_5").html("");
+                                            $("#cell" + no + "_5").append("<img src='img/iconSicbo/diceIcon-" + model.charAt(j) + ".png' style='width: 41px;' />");
+                                        }
+                                        else if (j == 5) {
+                                            txtNum = model.charAt(j).toString();
+                                        }
+                                        else if (j == 6) {
+                                            txtNum = txtNum.toString() + model.charAt(j).toString();
+                                            var num = parseInt(txtNum);
+                                            $("#cell" + no + "_6").html("");
+                                            $("#cell" + no + "_6").append("<img src='img/Number/" + num.toString() + ".png' style='width: 41px;' />");
+                                            txtNum = "";
+                                        }
+                                    }
+                                    no++;
+                                }
+                            }
+                        }
+                        else {
+                            $("#txtAlert").text("หมายเลขโต๊ะไม่ตรงกับประเภทเกมส์ กรุณาเข้าสู่ระบบอีกครั้ง.");
+                            $("#myModalAlert").modal();
+                            localStorage.clear();
+                            window.location.href = "Login.html";
+                        }
+                    }
+                    else {
+                        $("#txtAlert").text(data.msg);
+                        $("#myModalAlert").modal();
+                        localStorage.clear();
+                        window.location.href = "Login.html";
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถดึงข้อมูลโต๊ะได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function GetcreateNewGame() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/createNewGame',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#txtVal").val("");
+                        GettableProfile();
+                        CountdownTime(data.data.tl);
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        localStorage.setItem("GameId", data.data.gameId);
+                        localStorage.setItem("_ID", data.data._id);
+                        $("#txtGameID").text("Game ID : " + data.data.gameId);
+                        keyAgain = false;
+                    }
+                    else {
+                        $("#txtAlert").text("Error createNewGame : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถเริ่มเกมส์ใหม่ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function CountdownTime(timeleft) {
+            $("#myModalCountdown").modal();
+            document.getElementById("txtCount").innerHTML = "เริ่ม";
+            var downloadTimer = setInterval(function () {
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "หมดเวลา";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                } else {
+                    document.getElementById("txtCount").innerHTML = timeleft;
+                }
+                timeleft -= 1;
+            }, 1000);
+        }
+
+        function checkLength() {
+            var fieldLength = document.getElementById('txtVal').value.length;
+            if (fieldLength <= 3) {
+                return true;
+            }
+            else {
+                var str = document.getElementById('txtVal').value;
+                str = str.substring(0, str.length - 1);
+                document.getElementById('txtVal').value = str;
+            }
+        }
+
+        function isNumberKey(e) {
+            var regex = new RegExp("^[1-6]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
+        function checkValue() {
+            $("#myModalLoad").modal();
+            var arrPic = [];
+            var val = $('#txtVal').val();
+            var arrVal = [];
+            for (var x = 0; x < val.length; x++) {
+                arrVal.push(parseInt(val[x]));
+            }
+
+            arrVal.sort(function (a, b) {
+                return a[1] - b[1];
+            });
+
+            var total = arrVal.reduce(function (a, b) {
+                return a + b;
+            }, 0);
+
+            if (total <= 0) {
+                $("#txtAlert").text("กรุณากรอกค่า");
+                $("#myModalAlert").modal();
+                $('#txtVal').val("");
+                $('#txtVal').focus();
+                $("#myModalLoad").modal("hide");
+            } else if (total > 18) {
+                $("#txtAlert").text("กรุณากรอกค่ารวมห้ามเกิน 18");
+                $("#myModalAlert").modal();
+                $('#txtVal').val("");
+                $('#txtVal').focus();
+                $("#myModalLoad").modal("hide");
+            }
+            else {
+                if (null != cameraStream) {
+                    var ctx = capture.getContext('2d');
+                    var img = new Image();
+                    ctx.drawImage(stream, 0, 0, capture.width, capture.height);
+                    img.src = capture.toDataURL("image/png");
+                    img.width = 200;
+                    snapshot.innerHTML = '';
+                    snapshot.appendChild(img);
+                    var dataURI = snapshot.firstChild.getAttribute("src");
+                    var fd = new FormData();
+                    var files = dataURItoBlob(dataURI);
+                    fd.append('file', files);
+                    $.ajax({
+                        url: api + '/uploads/s3',
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            if (response.code == 0 || response.code == null) {
+                                var dataAdd = new Object();
+                                dataAdd.dealer = "ice";
+                                dataAdd.image = response.Location;
+                                $.ajax({
+                                    url: 'https://ai.aghippo168.com/apisicbo/v1/detect',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: JSON.stringify(dataAdd),
+                                    success: function (data) {
+                                        var dataCount = Object.keys(data.data).length;
+                                        var dataImgDetect = data.img;
+                                        if (dataCount == 4) {
+                                            var dataTotal = data.data;
+                                            for (var vehicle in dataTotal) {
+                                                if (vehicle != "sum") {
+                                                    arrPic.push(dataTotal[vehicle]);
+                                                }
+                                            }
+
+                                            arrPic.sort(function (a, b) {
+                                                return a - b;
+                                            });
+
+                                            arrVal.sort(function (a, b) {
+                                                return a - b;
+                                            });
+
+                                            var countDup = 0;
+                                            for (var c = 0; c < arrVal.length; c++) {
+                                                if (arrVal[c] == arrPic[c]) {
+                                                    countDup++;
+                                                }
+                                            }
+
+                                            if (countDup == 3) {
+                                                var dataAdd = new Object();
+                                                dataAdd.dealer = "ice";
+                                                dataAdd.imageorigin = response.Location;
+                                                dataAdd.imagedetect = dataImgDetect;
+                                                dataAdd.valid = true;
+                                                $.ajax({
+                                                    url: 'https://ai.aghippo168.com/apisicbo/v1/train',
+                                                    type: 'POST',
+                                                    dataType: 'json',
+                                                    data: JSON.stringify(dataAdd),
+                                                    success: function (data) {
+                                                        if (data.msg == "success") {
+                                                            var sendData = new Object();
+                                                            sendData.gameId = localStorage.getItem("GameId");
+                                                            sendData.rsSic = val.toString();
+                                                            $.ajax({
+                                                                url: api + '/clientRoute/game/addcard',
+                                                                type: 'POST',
+                                                                dataType: 'json',
+                                                                data: sendData,
+                                                                success: function (data, textStatus, xhr) {
+                                                                    if (data.code == 0) {
+                                                                        if (total <= 10) {
+                                                                            $('#txtResult').text(total + " ต่ำ");
+                                                                            $('#myModalResult').modal();
+                                                                        }
+                                                                        else {
+                                                                            $('#txtResult').text(total + " สูง");
+                                                                            $('#myModalResult').modal();
+                                                                        }
+                                                                        $("#myModalLoad").modal("hide");
+                                                                    }
+                                                                    else {
+                                                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Addcard (True) : " + data.msg);
+                                                                        $("#myModalAlert").modal();
+                                                                        $("#myModalLoad").modal("hide");
+                                                                    }
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    $("#txtAlert").text("ไม่สามารถส่งค่าได้ กรุณาลองใหม่อีกครั้ง. Error (True) : " + xhr.statusText);
+                                                                    $("#myModalAlert").modal();
+                                                                    $("#myModalLoad").modal("hide");
+                                                                }
+                                                            });
+                                                        }
+                                                        else {
+                                                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (True) : " + data.msg);
+                                                            $("#myModalAlert").modal();
+                                                            $("#myModalLoad").modal("hide");
+                                                        }
+
+                                                        keyAgain = false;
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (True) : " + xhr.statusText);
+                                                        $("#myModalAlert").modal();
+                                                        $("#myModalLoad").modal("hide");
+                                                    }
+                                                });
+                                            }
+                                            else if (countDup < 3 && keyAgain == false) {
+                                                $("#txtAlert").text("กรุณากรอกผลใหม่อีกครั้ง. เนื่องจากค่าที่กรอกกับกล้องจับภาพไม่ตตรงกัน");
+                                                $('#txtVal').val("");
+                                                $("#myModalAlert").modal();
+                                                $("#myModalLoad").modal("hide");
+                                                keyAgain = true;
+                                            }
+                                            else if (countDup < 3 && keyAgain == true) {
+                                                var dataAdd = new Object();
+                                                dataAdd.dealer = "ice";
+                                                dataAdd.imageorigin = response.Location;
+                                                dataAdd.imagedetect = dataImgDetect;
+                                                dataAdd.valid = false;
+                                                $.ajax({
+                                                    url: 'https://ai.aghippo168.com/apisicbo/v1/train',
+                                                    type: 'POST',
+                                                    dataType: 'json',
+                                                    data: JSON.stringify(dataAdd),
+                                                    success: function (data) {
+                                                        if (data.msg == "success") {
+                                                            var sendData = new Object();
+                                                            sendData.gameId = localStorage.getItem("GameId");
+                                                            sendData.rsSic = val.toString();
+                                                            $.ajax({
+                                                                url: api + '/clientRoute/game/addcard',
+                                                                type: 'POST',
+                                                                dataType: 'json',
+                                                                data: sendData,
+                                                                success: function (data, textStatus, xhr) {
+                                                                    if (data.code == 0) {
+                                                                        if (total <= 10) {
+                                                                            $('#txtResult').text(total + " ต่ำ");
+                                                                            $('#myModalResult').modal();
+                                                                        }
+                                                                        else {
+                                                                            $('#txtResult').text(total + " สูง");
+                                                                            $('#myModalResult').modal();
+                                                                        }
+                                                                        $("#myModalLoad").modal("hide");
+                                                                    }
+                                                                    else {
+                                                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Addcard (False) : " + data.msg);
+                                                                        $("#myModalAlert").modal();
+                                                                        $("#myModalLoad").modal("hide");
+                                                                    }
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    $("#txtAlert").text("ไม่สามารถส่งค่าได้ กรุณาลองใหม่อีกครั้ง. Error (False) : " + xhr.statusText);
+                                                                    $("#myModalAlert").modal();
+                                                                    $("#myModalLoad").modal("hide");
+                                                                }
+                                                            });
+                                                        }
+                                                        else {
+                                                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (False) : " + data.msg);
+                                                            $("#myModalAlert").modal();
+                                                            $("#myModalLoad").modal("hide");
+                                                        }
+
+                                                        keyAgain = false;
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (False) : " + xhr.statusText);
+                                                        $("#myModalAlert").modal();
+                                                        $("#myModalLoad").modal("hide");
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        else {
+                                            var dataAdd = new Object();
+                                            dataAdd.dealer = "ice";
+                                            dataAdd.imageorigin = response.Location;
+                                            dataAdd.imagedetect = dataImgDetect;
+                                            dataAdd.valid = false;
+                                            $.ajax({
+                                                url: 'https://ai.aghippo168.com/apisicbo/v1/train',
+                                                type: 'POST',
+                                                dataType: 'json',
+                                                data: JSON.stringify(dataAdd),
+                                                success: function (data) {
+                                                    if (data.msg == "success") {
+                                                        var sendData = new Object();
+                                                        sendData.gameId = localStorage.getItem("GameId");
+                                                        sendData.rsSic = val.toString();
+                                                        $.ajax({
+                                                            url: api + '/clientRoute/game/addcard',
+                                                            type: 'POST',
+                                                            dataType: 'json',
+                                                            data: sendData,
+                                                            success: function (data, textStatus, xhr) {
+                                                                if (data.code == 0) {
+                                                                    if (total <= 10) {
+                                                                        $('#txtResult').text(total + " ต่ำ");
+                                                                        $('#myModalResult').modal();
+                                                                    }
+                                                                    else {
+                                                                        $('#txtResult').text(total + " สูง");
+                                                                        $('#myModalResult').modal();
+                                                                    }
+                                                                    $("#myModalLoad").modal("hide");
+                                                                }
+                                                                else {
+                                                                    $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Addcard (False 2) : " + data.msg);
+                                                                    $("#myModalAlert").modal();
+                                                                    $("#myModalLoad").modal("hide");
+                                                                }
+                                                            },
+                                                            error: function (xhr, status, error) {
+                                                                $("#txtAlert").text("ไม่สามารถส่งค่าได้ กรุณาลองใหม่อีกครั้ง. Error (False 2) : " + xhr.statusText);
+                                                                $("#myModalAlert").modal();
+                                                                $("#myModalLoad").modal("hide");
+                                                            }
+                                                        });
+                                                    }
+                                                    else {
+                                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (False 2) : " + data.msg);
+                                                        $("#myModalAlert").modal();
+                                                        $("#myModalLoad").modal("hide");
+                                                    }
+
+                                                    keyAgain = false;
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Train (False) : " + xhr.statusText);
+                                                    $("#myModalAlert").modal();
+                                                    $("#myModalLoad").modal("hide");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Detect (1) : " + xhr.statusText);
+                                        $("#myModalAlert").modal();
+                                        $("#myModalLoad").modal("hide");
+                                    }
+                                });
+                            }
+                            else {
+                                $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Upload s3");
+                                $("#myModalAlert").modal();
+                                $("#myModalLoad").modal("hide");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Upload s3 : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                            $("#myModalLoad").modal("hide");
+                        }
+                    });
+                }
+                else {
+                    $("#txtAlert").text("ระบบกล้องมีปัญหา กรุณารีเฟชหน้าจออีกครั้ง.");
+                    $("#myModalAlert").modal();
+                    $("#myModalLoad").modal("hide");
+                }
+
+                $('#txtVal').focus();
+            }
+        }
+
+        function sendFinishGame() {
+            var val = $('#txtVal').val();
+            var arr = [];
+            for (var x = 0; x < val.length; x++) {
+                arr.push(parseInt(val[x]));
+            }
+
+            var sendData = new Object();
+            sendData.gameId = localStorage.getItem("GameId");
+            sendData.rsSic = val.toString();
+            $("#myModalLoad").modal();
+            $.ajax({
+                url: api + '/clientRoute/game/payout',
+                type: 'POST',
+                dataType: 'json',
+                data: sendData,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#txtVal").val("");
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        $("#txtGameID").text("Game ID : -");
+                        $("#txtResult").text("");
+                        GettableProfile();
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Payout : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+
+                    $('#myModalResult').modal('hide');
+                    $("#myModalLoad").modal("hide");
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถส่งผลได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function Logout() {
+            window.location.href = "Login.html?tbNo=" + localStorage.getItem("TableId");
+        }
+    </script>
+</body>
+</html>

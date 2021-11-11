@@ -1,0 +1,1016 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Pretty Gaming</title>
+    <link href="js/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .modal-dialog {
+            max-width: 700px !important;
+        }
+
+        div.modal-footer > a, .modal-title, .modal-body {
+            font-size: 2rem;
+        }
+
+        .imgResult {
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+
+        .circle {
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            padding: 5px;
+            background: #D72D41;
+            border: 2px solid #fff;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .bl {
+            background: #2771FF !important;
+        }
+
+        h3 {
+            font-size: 2rem !important;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-blue topbar mb-4 static-top shadow" style="height: 6.3rem;">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <img src="img/logo.png" style="width: 25%;" />
+                    </form>
+                    <input type="text" id="valTxt" style="opacity: 0;" />
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" id="" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 1.8rem;" id="time">
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="userDropdown" role="button">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtGameID" style="font-size: 1.8rem;">Game ID : -</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="txtProfile" style="font-size: 1.5rem;">ชื่อพนักงาน : - <br />รหัสพนักงาน : -</span>
+                                <img class="img-profile rounded-circle" src="img/user.png" id="imgStaff" />
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" onclick="Logout()" style="color: #000 !important;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    ออกจากระบบ
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetcreateNewGame();"><i class="fas fa-play fa-sm text-white-50"></i> เริ่มเกมส์ (กดปุ่ม + Enter)</a>
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="font-size: 1.2rem;" onclick="GetShuf();"><i class="fas fa-retweet fa-sm text-white-50"></i> เปลี่ยนขอนไพ่</a>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-3">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #2771FF;">
+                                    <h3 class="m-0 font-weight-bold text-primary">Tiger</h3>
+                                    <h3 class="m-0 font-weight-bold text-primary" id="totalTiger">Total = -</h3>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="background-color: #9899a1;">
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
+                                            <div class="row" style="display: inherit;">
+                                                <button type="button" class="btn btn-sm btn-facebook shadow-sm" onclick="removeCard('tiger')" style="margin-bottom: 5px;">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <img src="img/card2.png" style="width: 80%;" id="Bcard1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background-color: #D72D41;">
+                                    <h3 class="m-0 font-weight-bold text-primary">Dragon</h3>
+                                    <h3 class="m-0 font-weight-bold text-primary" id="totalDragon">Total = -</h3>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body" style="background-color: #9899a1;">
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
+                                            <div class="row" style="display: inherit;">
+                                                <button type="button" class="btn btn-sm btn-google shadow-sm" onclick="removeCard('dragon')" style="margin-bottom: 5px;">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <img src="img/card.png" style="width: 80%;" id="Pcard1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table-bordered">
+                                        <tr>
+                                            <td id="cell1_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_1"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_2"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_3"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_4"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_5"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                        <tr>
+                                            <td id="cell1_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell2_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell3_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell4_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell5_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell6_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell7_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell8_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell9_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell10_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell11_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell12_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell13_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell14_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell15_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell16_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell17_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell18_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell19_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                            <td id="cell20_6"><img src='img/none.png' style='width: 35px;' /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="text-align: center; margin-top: 5rem;">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size: 4rem;" id="statusGame">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel" style="text-align: center;">Version : 2.0</div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ออกจากระบบ</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">ต้องการออกจากระบบใช่หรือไม่?</div>
+                <div class="modal-footer">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> ยกเลิก (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="Logout();"><i class="fas fa-check fa-sm text-white-50"></i> ยืนยัน (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal shuffle-->
+    <div class="modal fade" id="shuffleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เปลี่ยนขอนไพ่</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">ต้องการเปลี่ยนขอนไพ่ใช่หรือไม่?</div>
+                <div class="modal-footer">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> ยกเลิก (กด -)</a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="actionShuffle();"><i class="fas fa-check fa-sm text-white-50"></i> ยืนยัน (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Countdown -->
+    <div id="myModalCountdown" class="modal">
+        <h1 style="text-align: center; color: #fff; font-size: 16rem; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="txtCount">เริ่ม</h1>
+    </div>
+    <!-- Modal Result -->
+    <div id="myModalResult" class="modal">
+        <img class="imgResult" id="img_Result">
+        <div style="text-align: center; margin-top: 5rem;">
+            <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 1rem;" data-dismiss="modal"><i class="fas fa-times fa-sm text-white-50"></i> แก้ไข (กด -)</a>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งผล (กด + Enter)</a>
+        </div>
+    </div>
+    <!-- Modal Re-->
+    <div class="modal fade" id="myModalRe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการส่งผลอีกครั้ง?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>ไม่สามารถส่งผลได้ กรุณากด Enter ส่งใหม่อีกครั้ง.</label><br /><label id="txtAlertRe"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="sendFinishGame();"><i class="fas fa-check fa-sm text-white-50"></i> ส่งอีกครั้ง (กด + Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalLoad" class="modal">
+        <div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff !important;">
+            <div class="spinner-border" role="status" style="width: 10rem; height: 10rem; font-size: 3rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert-->
+    <div class="modal fade" id="myModalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #d11b0a;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label id="txtAlert"></label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Alert Success-->
+    <div class="modal fade" id="myModalSuccessAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #307000bf;">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label>เปลี่ยนขอนไพ่เรียบร้อยแล้ว</label></div>
+                <div class="modal-footer" style="justify-content: center !important;">
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">ปิด (กด Enter)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/statistic.js"></script>
+    <script src="js/card.js"></script>
+    <script>
+        var api = "https://api-dev.prettygaming.asia";
+        var dragon = 0;
+        var tiger = 0;
+        var result_win = "";
+        var statusAddCrad = false;
+        var map = { 107: false, 13: false };
+        var statisticDRG = {
+            "b": "img/tiger.png",
+            "p": "img/dragon.png",
+            "t": "img/T.png",
+            "n": "img/none.png"
+        };
+        var statisticDRG2 = {
+            "p": "img/Banker/B_.png",
+            "b": "img/Player/P_.png",
+            "pt": "img/Banker/BT_.png",
+            "bt": "img/Player/PT_.png",
+            "n": "img/none.png"
+        };
+        $(document).ready(function () {
+            startTime();
+            GettableProfile();
+            $("#valTxt").focus();
+
+            $(document).click(function (e) {
+                $("#valTxt").focus();
+            });
+
+            $(document).keyup(function (e) {
+                if (e.keyCode == 107) {
+                    map[107] = true;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 110) {
+                    $('#logoutModal').modal();
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 106) {
+                    $('#shuffleModal').modal();
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && $('#myModalAlert').is(':visible')) {
+                    $('#myModalAlert').modal('hide');
+                    $('#txtAlert').text('');
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && $('#myModalSuccessAlert').is(':visible')) {
+                    $('#myModalSuccessAlert').modal('hide');
+                    $('#txtAlert').text('');
+                    map[107] = false;
+                    $("#valTxt").val("");
+                    $("#valTxt").focus();
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalRe').is(':visible')) {
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "เปิดไพ่";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#myModalResult').is(':visible')) {
+                    sendFinishGame();
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#logoutModal').is(':visible')) {
+                    Logout();
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true && $('#shuffleModal').is(':visible')) {
+                    actionShuffle();
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 13 && map[107] == true) {
+                    GetcreateNewGame();
+                    map[107] = false;
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 109 && $('#myModalResult').is(':visible')) {
+                    $('#myModalResult').modal('hide');
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 109 && $('#logoutModal').is(':visible')) {
+                    $('#logoutModal').modal('hide');
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 109 && $('#shuffleModal').is(':visible')) {
+                    $('#shuffleModal').modal('hide');
+                    $("#valTxt").val("");
+                }
+                else if (e.keyCode == 96) {
+                    location.reload(true);
+                }
+                else {
+                    getCard();
+                    map[107] = false;
+                }
+            });
+        });
+
+        function GetShuf() {
+            $('#shuffleModal').modal();
+            $("#valTxt").val("");
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout(function () {
+                startTime()
+            }, 500);
+        }
+
+        function GettableProfile() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/tableProfile',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        if (data.data.table.type == "DragonTiger") {
+                            if (data.data.game == null) {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                $("#statusGame").text("กดขอเวลาเพื่อเริ่มเกมส์ใหม่");
+
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                var model = data.data.stats.timeLine;
+                                for (var i = 0; i < model.length; i++) {
+                                    var model2 = model[i];
+                                    var no = 1;
+                                    for (var x = 0; x < model2.length; x++) {
+                                        var model3 = model2[x];
+                                        $("#cell" + (i + 1) + "_" + no + "").html("");
+                                        $("#cell" + (i + 1) + "_" + no + "").append("<img src='" + statisticDRG[model3] + "' style='width: 35px;' />");
+                                        no++;
+                                    }
+                                }
+
+                                var model_ = data.data.stats.donut;
+                                for (var i = 0; i < model_.length; i++) {
+                                    var model2_ = model_[i];
+                                    var no_ = 1;
+                                    for (var x = 0; x < model2_.length; x++) {
+                                        var model3_ = model2_[x];
+                                        $("#cell" + (i + 7) + "_" + no_ + "").html("");
+                                        $("#cell" + (i + 7) + "_" + no_ + "").append("<img src='" + statisticDRG2[model3_] + "' style='width: 35px;' />");
+                                        no_++;
+                                    }
+                                }
+                            }
+                            else {
+                                $("#txtProfile").html("ชื่อพนักงาน : " + data.data.dealer.name + " <br />รหัสพนักงาน : " + data.data.dealer.no + "");
+                                $("#txtGameID").text("Game ID : " + data.data.game.gameId);
+
+                                if (data.data.dealer.img != null) {
+                                    document.getElementById('imgStaff').src = data.data.dealer.img;
+                                }
+                                else {
+                                    document.getElementById('imgStaff').src = "img/user.png";
+                                }
+
+                                var model = data.data.stats.timeLine;
+                                for (var i = 0; i < model.length; i++) {
+                                    var model2 = model[i];
+                                    var no = 1;
+                                    for (var x = 0; x < model2.length; x++) {
+                                        var model3 = model2[x];
+                                        $("#cell" + (i + 1) + "_" + no + "").html("");
+                                        $("#cell" + (i + 1) + "_" + no + "").append("<img src='" + statisticDRG[model3] + "' style='width: 35px;' />");
+                                        no++;
+                                    }
+                                }
+
+                                var model_ = data.data.stats.donut;
+                                for (var i = 0; i < model_.length; i++) {
+                                    var model2_ = model_[i];
+                                    var no_ = 1;
+                                    for (var x = 0; x < model2_.length; x++) {
+                                        var model3_ = model2_[x];
+                                        $("#cell" + (i + 7) + "_" + no_ + "").html("");
+                                        $("#cell" + (i + 7) + "_" + no_ + "").append("<img src='" + statisticDRG2[model3_] + "' style='width: 35px;' />");
+                                        no_++;
+                                    }
+                                }
+
+                                localStorage.removeItem("GameId");
+                                localStorage.removeItem("_ID");
+                                localStorage.setItem("GameId", data.data.game.gameId);
+                                localStorage.setItem("_ID", data.data.game._id);
+
+                                if (data.data.game.status == "CountDown") {
+                                    CountdownTime(data.data.game.tl);
+                                }
+                                else if (data.data.game.status == "ShowResult") {
+                                    statusAddCrad = true;
+                                }
+
+                                if (data.data.game.status == "ShowResult") {
+                                    $("#statusGame").text("แจกไพ่ได้เลย");
+                                }
+                                else if (data.data.game.status == "CountDown") {
+                                    $("#statusGame").text("กำลังนับถอยหลัง");
+                                }
+                                else if (data.data.game.status == "Shuffle") {
+                                    $("#statusGame").text("กำลังสับไพ่");
+                                }
+                                else if (data.data.game.status == "PayOut") {
+                                    $("#statusGame").text("จบเกมส์แล้ว");
+                                }
+
+                                if (data.data.game.rsDr.tiger != null) {
+                                    tiger = card2[data.data.game.rsDr.tiger].dragontiger;
+                                    document.getElementById("Bcard1").src = "img/Card/" + data.data.game.rsDr.tiger + ".png";
+                                }
+                                if (data.data.game.rsDr.dragon != null) {
+                                    dragon = card2[data.data.game.rsDr.dragon].dragontiger;
+                                    document.getElementById("Pcard1").src = "img/Card/" + data.data.game.rsDr.dragon + ".png";
+                                }
+
+                                $("#totalDragon").text("Total = " + dragon);
+                                $("#totalTiger").text("Total = " + tiger);
+
+                                $('#img_Result').removeAttr('src');
+                                if ($("#Pcard1").attr("src") != "img/card.png" && $("#Bcard1").attr("src") != "img/card2.png") {
+                                    if (dragon > tiger) {
+                                        document.getElementById("img_Result").src = "img/DragonWin.png";
+                                        result_win = "dragon";
+                                        $('#myModalResult').modal();
+                                    }
+                                    else if (tiger > dragon) {
+                                        document.getElementById("img_Result").src = "img/TigerWin.png";
+                                        result_win = "tiger";
+                                        $('#myModalResult').modal();
+                                    }
+                                    else if (tiger == dragon) {
+                                        document.getElementById("img_Result").src = "img/Tie.png";
+                                        result_win = "tie";
+                                        $('#myModalResult').modal();
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            $("#txtAlert").text("หมายเลขโต๊ะไม่ตรงกับประเภทเกมส์ กรุณาเข้าสู่ระบบอีกครั้ง.");
+                            $("#myModalAlert").modal();
+                            localStorage.clear();
+                            window.location.href = "Login.html";
+                        }
+                    }
+                    else {
+                        $("#txtAlert").text(data.msg);
+                        $("#myModalAlert").modal();
+                        localStorage.clear();
+                        window.location.href = "Login.html";
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถดึงข้อมูลโต๊ะได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function GetcreateNewGame() {
+            var login = new Object();
+            login.tableId = localStorage.getItem("TableId");
+            login.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/createNewGame',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        document.getElementById("Pcard1").src = "img/card.png";
+                        document.getElementById("Bcard1").src = "img/card2.png";
+                        dragon = 0;
+                        tiger = 0;
+                        GettableProfile();
+                        CountdownTime(data.data.tl);
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        localStorage.setItem("GameId", data.data.gameId);
+                        localStorage.setItem("_ID", data.data._id);
+                        $("#txtGameID").text("Game ID : " + data.data.gameId);
+
+                        $("#totalDragon").text("Total = " + dragon);
+                        $("#totalTiger").text("Total = " + tiger);
+                    }
+                    else {
+                        $("#txtAlert").text("Error createNewGame : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถเริ่มเกมส์ใหม่ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+            map[107] = false;
+            $("#valTxt").val("");
+        }
+
+        function CountdownTime(timeleft) {
+            $("#myModalCountdown").modal();
+            document.getElementById("txtCount").innerHTML = "เริ่ม";
+            var downloadTimer = setInterval(function () {
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    var result = new Object();
+                    result.gameId = localStorage.getItem("GameId");
+                    $.ajax({
+                        url: api + '/clientRoute/game/showResult',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: result,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                document.getElementById("txtCount").innerHTML = "เปิดไพ่";
+                                setTimeout(function () {
+                                    $("#myModalCountdown").modal("hide");
+                                }, 1000);
+                                statusAddCrad = true;
+                                GettableProfile();
+                            }
+                            else {
+                                $('#txtAlertRe').text(data.msg);
+                                $('#myModalRe').modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                } else {
+                    document.getElementById("txtCount").innerHTML = timeleft;
+                }
+                timeleft -= 1;
+            }, 1000);
+        }
+
+        function getCard() {
+            $('#img_Result').removeAttr('src');
+
+            if ($("#valTxt").val().length == 5 && statusAddCrad == true) {
+                var dataGame = new Object();
+                dataGame.gameId = localStorage.getItem("GameId");
+
+                var modelNo = $("#valTxt").val().charAt(0);
+                var modelVal = $("#valTxt").val().substring(1);
+
+                if (modelNo == "A") {
+                    dataGame.dragon = card[modelVal].cardVal;
+                }
+                else if (modelNo == "B") {
+                    dataGame.tiger = card[modelVal].cardVal;
+                }
+
+                if (modelNo == "A" || modelNo == "B") {
+                    $.ajax({
+                        url: api + '/clientRoute/game/addcard',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: dataGame,
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0) {
+                                if (modelNo == "A") {
+                                    dragon = card[modelVal].dragontiger;
+                                    document.getElementById("Pcard1").src = "img/Card/" + card[modelVal].cardVal + ".png";
+                                }
+                                else if (modelNo == "B") {
+                                    tiger = card[modelVal].dragontiger;
+                                    document.getElementById("Bcard1").src = "img/Card/" + card[modelVal].cardVal + ".png";
+                                }
+
+                                if ($("#Pcard1").attr("src") != "img/card.png" && $("#Bcard1").attr("src") != "img/card2.png") {
+                                    if (dragon > tiger) {
+                                        document.getElementById("img_Result").src = "img/DragonWin.png";
+                                        result_win = "dragon";
+                                        $('#myModalResult').modal();
+                                    }
+                                    else if (tiger > dragon) {
+                                        document.getElementById("img_Result").src = "img/TigerWin.png";
+                                        result_win = "tiger";
+                                        $('#myModalResult').modal();
+                                    }
+                                    else if (tiger == dragon) {
+                                        document.getElementById("img_Result").src = "img/Tie.png";
+                                        result_win = "tie";
+                                        $('#myModalResult').modal();
+                                    }
+                                }
+
+                                $("#totalDragon").text("Total = " + dragon);
+                                $("#totalTiger").text("Total = " + tiger);
+                            }
+                            else {
+                                $("#txtAlert").text("Error sendCard Dragon , Tiger : " + data.msg);
+                                $("#myModalAlert").modal();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $("#txtAlert").text("ไม่สามารถเปิดไพ่ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                            $("#myModalAlert").modal();
+                        }
+                    });
+                }
+                else {
+                    $("#txtAlert").text("รูปแบบรหัสไพ่ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง.");
+                    $("#myModalAlert").modal();
+                }
+
+                $("#valTxt").val("");
+            }
+            else if ($("#valTxt").val().length > 5) {
+                $("#txtAlert").text("รูปแบบรหัสไพ่ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง.");
+                $("#myModalAlert").modal();
+                $("#valTxt").val("");
+            }
+            map[107] = false;
+        }
+
+        function removeCard(typeCard) {
+            var sendData = new Object();
+            sendData.gameId = localStorage.getItem("GameId");
+            sendData.position = typeCard;
+            $.ajax({
+                url: api + '/clientRoute/game/removeCard',
+                type: 'POST',
+                dataType: 'json',
+                data: sendData,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        if (typeCard == "dragon") {
+                            dragon = 0;
+                            document.getElementById("Pcard1").src = "img/card.png";
+                        }
+                        else if (typeCard == "tiger") {
+                            tiger = 0;
+                            document.getElementById("Bcard1").src = "img/card2.png";
+                        }
+
+                        $("#totalDragon").text("Total = " + dragon);
+                        $("#totalTiger").text("Total = " + tiger);
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error RemoveCard : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถลบไพ่ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+        }
+
+        function sendFinishGame() {
+            var sendData = new Object();
+            sendData.gameId = localStorage.getItem("GameId");
+
+            if (result_win == "dragon") {
+                sendData.winDr = ["DRAGON"];
+            }
+            else if (result_win == "tiger") {
+                sendData.winDr = ["TIGER"];
+            }
+            else if (result_win == "tie") {
+                sendData.winDr = ["TIE"];
+            }
+
+            $("#myModalLoad").modal();
+            $.ajax({
+                url: api + '/clientRoute/game/payout',
+                type: 'POST',
+                dataType: 'json',
+                data: sendData,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        document.getElementById("Pcard1").src = "img/card.png";
+                        document.getElementById("Bcard1").src = "img/card2.png";
+                        dragon = 0;
+                        tiger = 0;
+                        localStorage.removeItem("GameId");
+                        localStorage.removeItem("_ID");
+                        $("#txtGameID").text("Game ID : -");
+
+                        $("#totalDragon").text("Total = " + dragon);
+                        $("#totalTiger").text("Total = " + tiger);
+
+                        GettableProfile();
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Payout : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+
+                    $('#myModalResult').modal('hide');
+                    $("#myModalLoad").modal("hide");
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("ไม่สามารถส่งผล Payout ได้ กรุณาลองใหม่อีกครั้ง. Error : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                    $('#myModalResult').modal('hide');
+                    $("#myModalLoad").modal("hide");
+                }
+            });
+
+            map[107] = false;
+            $("#valTxt").val("");
+        }
+
+        function actionShuffle() {
+            $('#shuffleModal').modal('hide');
+            var result = new Object();
+            result.tableId = localStorage.getItem("TableId");
+            result.dealerNo = localStorage.getItem("Dealer");
+            $.ajax({
+                url: api + '/clientRoute/game/shuffle',
+                type: 'POST',
+                dataType: 'json',
+                data: result,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        $("#myModalSuccessAlert").modal();
+                        GettableProfile();
+                    }
+                    else {
+                        $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Shuffle : " + data.msg);
+                        $("#myModalAlert").modal();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $("#txtAlert").text("กรุณาลองใหม่อีกครั้ง. Error Shuffle : " + xhr.statusText);
+                    $("#myModalAlert").modal();
+                }
+            });
+            map[107] = false;
+            $("#valTxt").val("");
+        }
+
+        function Logout() {
+            window.location.href = "Login.html?tbNo=" + localStorage.getItem("TableId");
+            $("#valTxt").val("");
+        }
+    </script>
+</body>
+</html>

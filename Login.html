@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Pretty Gaming</title>
+    <link href="js/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-primary">
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <div class="card o-hidden border-0 shadow-lg my-5" style="margin-top: 5rem !important;">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5" style="background-color: #282848;">
+                                    <div class="text-center">
+                                        <img src="img/logo.png" style="width: 55%;" />
+                                        <h1 class="h4 mb-4" style="margin-top: 1rem;">เข้าสู่ระบบ</h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" id="staffNo" autocomplete="off" placeholder="รหัสพนักงาน">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" id="tableNo" autocomplete="off" placeholder="หมายเลขโต๊ะ">
+                                        </div>
+                                        <a onclick="Login()" id="btnSignIn" class="btn btn-primary btn-user btn-block" style="color: #fff; font-weight: bold;">
+                                            เข้าสู่ระบบ
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel" style="text-align: center;">Version : 2.0</div>
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"><label id="lbAlert"></label></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script type="text/javascript">
+        var api = 'https://api-dev.prettygaming.asia';
+
+        $(document).ready(function () {
+            $("#staffNo").focus();
+            var tableno = getUrlParameter('tbNo');
+            $("#tableNo").val(tableno);
+
+            $('body').on('keyup', function (evt) {
+                if (evt.keyCode == 13) {
+                    $('#btnSignIn').click();
+                }
+                else if (evt.keyCode == 13 && $('#modalAlert').is(':visible')) {
+                    $('#modalAlert').modal('hide');
+                }
+                //else if (evt.keyCode == 96) {
+                //    location.reload(true);
+                //}
+                else {
+                    getDealer();
+                }
+            });
+
+            localStorage.clear();
+        });
+
+        function getDealer() {
+            if ($("#staffNo").val().charAt(0) == "A" || $("#staffNo").val().charAt(0) == "B" || $("#staffNo").val().charAt(0) == "C" || $("#staffNo").val().charAt(0) == "D" || $("#staffNo").val().charAt(0) == "E") {
+                $("#staffNo").val("");
+            }
+            else {
+                if ($("#staffNo").val().length == 6) {
+                    Login();
+                }
+            }
+        }
+
+        function Login() {
+            var login = new Object();
+            login.tableId = $('#tableNo').val();
+            if ($("#staffNo").val().length == 7) {
+                login.dealerNo = $("#staffNo").val().substr(1);
+            }
+            else if ($("#staffNo").val().length == 6) {
+                login.dealerNo = $("#staffNo").val();
+            }
+            $.ajax({
+                url: api + '/clientRoute/game/setDealer',
+                type: 'POST',
+                dataType: 'json',
+                data: login,
+                success: function (data, textStatus, xhr) {
+                    if (data.code == 0) {
+                        localStorage.setItem("TableId", data.data.tableId);
+                        localStorage.setItem("TypeTable", data.data.type);
+                        localStorage.setItem("Dealer", data.data.dealer);
+
+                        if (data.data.type == "Baccarat") {
+                            window.location.href = "Baccarat.html";
+                        }
+                        else if (data.data.type == "DragonTiger") {
+                            window.location.href = "DragonTiger.html";
+                        }
+                        else if (data.data.type == "Roulette") {
+                            window.location.href = "Roulette.html";
+                        }
+                        else if (data.data.type == "SicBo") {
+                            window.location.href = "Sicbo.html";
+                        }
+                        else if (data.data.type == "ThaiFanTan") {
+                            window.location.href = "ThaiFanTanAuto.html";
+                        }
+                    }
+                    else {
+                        document.getElementById('lbAlert').innerHTML = data.msg;
+                        $('#modalAlert').modal('show');
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                }
+            });
+        }
+
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
